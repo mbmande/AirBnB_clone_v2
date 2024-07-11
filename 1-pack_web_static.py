@@ -16,7 +16,7 @@ def do_pack():
         d_time.hour,
         d_time.minute,
         d_time.second
-                                                                                        )
+    )                                                                                    )
     try:
         print("Packing web_static to {}".format(output))
         local("tar -cvzf {} web_static".format(output))
