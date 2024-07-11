@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-""" ================"""
 import os
 from datetime import datetime
 from fabric.api import local, runs_once
@@ -16,12 +15,10 @@ def do_pack():
         d_time.hour,
         d_time.minute,
         d_time.second
-    )                                                                                    )
+    )
     try:
-        print("Packing web_static to {}".format(output))
         local("tar -cvzf {} web_static".format(output))
         size = os.stat(output).st_size
-        print("web_static packed: {} -> {} Bytes".format(output, size))
     except Exception:
         output = None
     return output
