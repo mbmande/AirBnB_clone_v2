@@ -1,24 +1,26 @@
+#!/usr/bin/python3
+import os
+from datetime import datetime
+from fabric.api import local, runs_once
+
 @runs_once
 def do_pack():
-        """Archives the static files."""
-            output_dir = "versions"
-                if not os.path.exists(output_dir):
-                            try:
-                                            os.makedirs(output_dir)
-                                                    except OSError as e:
-                                                                    print(f"Error creating directory {output_dir}: {e}")
-                                                                                return None
-                                                                                
-                                                                                d_time = datetime.now()
-                                                                                    output = f"{output_dir}/web_static_{d_time.strftime('%Y%m%d%H%M%S')}.tgz"
-                                                                                        
-                                                                                            try:
-                                                                                                        print(f"Packing web_static to {output}")
-                                                                                                                local(f"tar -cvzf {output} web_static")
-                                                                                                                        size = os.stat(output).st_size
-                                                                                                                                print(f"web_static packed: {output} -> {size} Bytes")
-                                                                                                                                    except Exception as e:
-                                                                                                                                                print(f"Error packing: {e}")
-                                                                                                                                                        output = None
-                                                                                                                                                            
-                                                                                                                                                                return output
+    if not os.path.isdir("versions"):
+        os.mkdir("versions")
+    d_time = datetime.now()
+    output = "versions/web_static_{}{}{}{}{}{}.tgz".format(
+        d_time.year,
+        d_time.month,
+        d_time.day,
+        d_time.hour,
+        d_time.minute,
+        d_time.second
+                                                                                        )
+    try:
+        print("Packing web_static to {}".format(output))
+        local("tar -cvzf {} web_static".format(output))
+        size = os.stat(output).st_size
+        print("web_static packed: {} -> {} Bytes".format(output, size))
+    except Exception:
+        output = None
+        return output
